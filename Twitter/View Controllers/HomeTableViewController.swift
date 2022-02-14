@@ -7,17 +7,31 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class HomeTableViewController: UITableViewController {
 
+    var tweetArray = [Tweet]()
+    var numberOfTweets: Int!
+    var tweetLoadError: UIAlertController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Unhighlight selection between views
         self.clearsSelectionOnViewWillAppear = true
+        
+        // Create new alert for loading of tweets error
+        tweetLoadError = UIAlertController(title: "Alert", message: "Could not login.", preferredStyle: .alert)
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in return})
+        
+        //Add OK button to a dialog message
+        tweetLoadError.addAction(ok)
+        
+        loadTweet()
+        
     }
     
     @IBAction func onLogout(_ sender: Any) {
@@ -26,16 +40,47 @@ class HomeTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    func loadTweet() {
+        // Get tweets from API, load them into the cells
+        let twitterTweetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+        let params = ["count" : 10]
+        
+        TwitterAPICaller.client?.getDictionariesRequest(url: twitterTweetURL, parameters: params, success:
+            { (tweets: [NSDictionary]) in
+            
+            // Clear tweetArray, then add all tweets to it
+            self.tweetArray.removeAll()
+            for singleTweet in tweets {
+                self.tweetArray.append(Tweet.init(tweetResponse: singleTweet))
+            }
+            
+            self.tableView.reloadData()
+            
+        }, failure: { Error in
+            print("Could not retrieve tweets.")
+            self.present(self.tweetLoadError, animated: true, completion: nil)
+        })
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
+        let tweet = tweetArray[indexPath.row]
+        
+        cell.tweetForCell = tweet
+        return cell
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return tweetArray.count
     }
 
 }
