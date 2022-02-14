@@ -33,6 +33,7 @@
                                             </attributes>
                                         </fragment>
                                     </attributedString>
+                                    <color key="baseBackgroundColor" red="0.065879606320000006" green="0.79592278520000004" blue="0.89114851799999995" alpha="0.8980392157" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="onLoginButton:" destination="BH3-xZ-P8P" eventType="touchUpInside" id="eB3-PY-9lo"/>
@@ -81,7 +82,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrU-YA-ag3">
-                                            <rect key="frame" x="76" y="41" width="318" height="59"/>
+                                            <rect key="frame" x="76" y="41" width="318" height="57"/>
                                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, </string>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
@@ -98,7 +99,7 @@
                                     <constraints>
                                         <constraint firstItem="zqa-8p-urt" firstAttribute="leading" secondItem="gyQ-MM-cwp" secondAttribute="leading" constant="20" symbolic="YES" id="4lN-Od-xsE"/>
                                         <constraint firstItem="kRU-o6-qrG" firstAttribute="leading" secondItem="zqa-8p-urt" secondAttribute="trailing" constant="8" symbolic="YES" id="6D9-Wo-Sso"/>
-                                        <constraint firstAttribute="bottom" secondItem="MrU-YA-ag3" secondAttribute="bottom" constant="20" symbolic="YES" id="Jjh-33-GSK"/>
+                                        <constraint firstAttribute="bottom" secondItem="MrU-YA-ag3" secondAttribute="bottom" constant="22" id="Jjh-33-GSK"/>
                                         <constraint firstAttribute="trailing" secondItem="kRU-o6-qrG" secondAttribute="trailing" constant="20" symbolic="YES" id="O5c-r0-jvx"/>
                                         <constraint firstItem="MrU-YA-ag3" firstAttribute="top" secondItem="kRU-o6-qrG" secondAttribute="bottom" id="VAF-Sn-ZjW"/>
                                         <constraint firstItem="zqa-8p-urt" firstAttribute="top" secondItem="gyQ-MM-cwp" secondAttribute="top" constant="20" symbolic="YES" id="YoP-rp-agW"/>

@@ -15,6 +15,8 @@ class HomeTableViewController: UITableViewController {
     var numberOfTweets: Int!
     var tweetLoadError: UIAlertController!
     
+    let tweetRefreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,9 +32,12 @@ class HomeTableViewController: UITableViewController {
         //Add OK button to a dialog message
         tweetLoadError.addAction(ok)
         
-        loadTweet()
-        
+        loadTweets()
+        tweetRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
+        tableView.refreshControl = tweetRefreshControl
     }
+    
+    // MARK: - IB Actions
     
     @IBAction func onLogout(_ sender: Any) {
         TwitterAPICaller.client?.logout()
@@ -40,11 +45,41 @@ class HomeTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - Get initial Tweets onto the view
     
-    func loadTweet() {
+    @objc func loadTweets() {
         // Get tweets from API, load them into the cells
+        numberOfTweets = 20
+        
         let twitterTweetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let params = ["count" : 10]
+        let params: [String: Int] = ["count" : numberOfTweets]
+        
+        TwitterAPICaller.client?.getDictionariesRequest(url: twitterTweetURL, parameters: params, success:
+            { (tweets: [NSDictionary]) in
+            
+            // Clear tweetArray, then add all tweets to it
+            self.tweetArray.removeAll()
+            for singleTweet in tweets {
+                self.tweetArray.append(Tweet.init(tweetResponse: singleTweet))
+            }
+            
+            self.tableView.reloadData()
+            self.tweetRefreshControl.endRefreshing()
+            
+        }, failure: { Error in
+            print("Could not retrieve tweets.")
+            self.present(self.tweetLoadError, animated: true, completion: nil)
+        })
+    }
+    
+    // MARK: - Add more tweets as user pulls from bottom
+    
+    func loadMoreTweets() {
+        let twitterTweetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+        
+        // Add 10 tweets to bottom of view
+        numberOfTweets = numberOfTweets + 10
+        let params: [String: Int] = ["count" : numberOfTweets]
         
         TwitterAPICaller.client?.getDictionariesRequest(url: twitterTweetURL, parameters: params, success:
             { (tweets: [NSDictionary]) in
@@ -63,6 +98,15 @@ class HomeTableViewController: UITableViewController {
         })
     }
     
+    // Refreshes the tableview when user hits the bottom.
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == tweetArray.count {
+            loadMoreTweets()
+        }
+    }
+    
+    // MARK: - Table view data source
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
         let tweet = tweetArray[indexPath.row]
@@ -70,11 +114,8 @@ class HomeTableViewController: UITableViewController {
         cell.tweetForCell = tweet
         return cell
     }
-    
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -82,5 +123,4 @@ class HomeTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return tweetArray.count
     }
-
 }
