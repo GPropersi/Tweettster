@@ -24,7 +24,9 @@ The following **bonus** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 Required user stories:
+
 <img src='https://i.imgur.com/JfTtQew.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 Bonus user stories (pull-to-refresh, infinite load of past tweets):
+
 <img src='https://i.imgur.com/WFuzMSb.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
