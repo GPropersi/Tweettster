@@ -82,12 +82,11 @@ class TweetWithImageCell: UITableViewCell {
         }
         
         func setRetweeted(_ isRetweeted: Bool) {
+            retweeted = isRetweeted
             if (isRetweeted) {
                 retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
-                retweetButton.isEnabled = false
             } else {
                 retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
-                retweetButton.isEnabled = true
             }
         }
         
@@ -95,11 +94,25 @@ class TweetWithImageCell: UITableViewCell {
     // MARK: - IB Actions
         
         @IBAction func retweetPressed(_ sender: Any) {
-            TwitterAPICaller.client?.retweet(tweetID: self.tweetIDforCell, success: {
-                self.setRetweeted(true)
-            }, failure: { (error) in
-                print("Failure to retweet: \(error)")
-            })
+            let toBeRetweeted = !retweeted
+            
+            if (toBeRetweeted) {
+                TwitterAPICaller.client?.retweet(tweetID: self.tweetIDforCell, success: {
+                    self.tweetForCell.retweetCount += 1
+                    self.retweetCounts.text = self.tweetForCell.getStringofRetweetCounts()
+                    self.setRetweeted(true)
+                }, failure: { (error) in
+                    print("Failure to retweet: \(error)")
+                })
+            } else {
+                TwitterAPICaller.client?.unretweet(tweetID: self.tweetIDforCell, success: {
+                    self.tweetForCell.retweetCount -= 1
+                    self.retweetCounts.text = self.tweetForCell.getStringofRetweetCounts()
+                    self.setRetweeted(false)
+                }, failure: { (error) in
+                    print("Failure to remove retweet: \(error)")
+                })
+            }
         }
         
         @IBAction func favPressed(_ sender: Any) {
@@ -107,18 +120,23 @@ class TweetWithImageCell: UITableViewCell {
             
             if (toBeFavorited) {
                 TwitterAPICaller.client?.favoriteTweet(tweetID: self.tweetIDforCell, success: {
+                    self.tweetForCell.favCount += 1
+                    self.favCounts.text = self.tweetForCell.getStringofFavCounts()
                     self.setFavorite(true)
                 }, failure: { (error) in
                     print("Favorite did not succeed: \(error)")
                 })
             } else {
                 TwitterAPICaller.client?.unfavoriteTweet(tweetID: self.tweetIDforCell, success: {
+                    self.tweetForCell.favCount -= 1
+                    self.favCounts.text = self.tweetForCell.getStringofFavCounts()
                     self.setFavorite(false)
                 }, failure: { (error) in
                     print("Unfavorite did not succeed: \(error)")
                 })
             }
         }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

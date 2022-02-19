@@ -291,7 +291,6 @@
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="EUY-Jm-3lz" userLabel="mediaImage">
                                             <rect key="frame" x="76" y="126.5" width="318" height="182.5"/>
-                                            <color key="backgroundColor" red="0.38509025650000001" green="1" blue="0.034009672370000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>

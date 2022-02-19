@@ -123,12 +123,14 @@ class HomeTableViewController: UITableViewController {
             // IF the URL is an empty string "", then no media image was found. Set cell without image
             let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
             cell.tweetForCell = tweet
+            cell.selectionStyle = .none
             return cell
         }
         
         // Set cell with image
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetWithImageCell", for: indexPath) as! TweetWithImageCell
         cell.tweetForCell = tweet
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -140,4 +142,7 @@ class HomeTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return tweetArray.count
     }
+    
 }
+
+    
