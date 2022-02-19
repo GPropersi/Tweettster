@@ -14,11 +14,15 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tweetContent: UILabel!
+    @IBOutlet weak var timeSinceTweeted: UILabel!
+    @IBOutlet weak var tweetHandle: UILabel!
     
     var tweetForCell: Tweet! {
         didSet {
             userNameLabel.text = tweetForCell.userName
             tweetContent.text = tweetForCell.tweetText
+            timeSinceTweeted.text = tweetForCell.timeSinceTweet
+            tweetHandle.text = "@" + tweetForCell.tweetHandle
 
             // Set Image
             profileImageView.af_setImage(withURL: tweetForCell.profileImageURLSecure!)

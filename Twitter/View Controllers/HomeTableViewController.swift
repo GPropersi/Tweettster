@@ -17,6 +17,8 @@ class HomeTableViewController: UITableViewController {
     
     let tweetRefreshControl = UIRefreshControl()
     
+    // MARK: View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,10 +33,15 @@ class HomeTableViewController: UITableViewController {
         
         //Add OK button to a dialog message
         tweetLoadError.addAction(ok)
+        //tableView.separatorColor = UIColor.white // Implement for dark mode
         
-        loadTweets()
         tweetRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = tweetRefreshControl
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.loadTweets()
     }
     
     // MARK: - IB Actions
