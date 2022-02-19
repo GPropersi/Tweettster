@@ -352,7 +352,7 @@
                                 <action selector="onLogout:" destination="m03-fL-AA9" id="hQX-4U-Dbc"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Tweet" id="MOd-Bl-ocH">
+                        <barButtonItem key="rightBarButtonItem" image="edit-icon" id="MOd-Bl-ocH">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <segue destination="LzE-lP-39y" kind="presentation" id="2Q8-RO-X6j"/>
@@ -700,6 +700,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="edit-icon" width="30" height="27"/>
         <image name="favor-icon" width="30" height="30"/>
         <image name="home-icon" width="30" height="30"/>
         <image name="profile-Icon" width="26" height="26"/>

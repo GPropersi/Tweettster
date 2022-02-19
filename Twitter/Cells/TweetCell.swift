@@ -13,6 +13,8 @@ class TweetCell: UITableViewCell {
     // MARK: - This file contains a tweet cell WITHOUT an image.
     
     var tweetIDforCell: Int = -1
+    var favorited: Bool!
+    var retweeted: Bool!
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -32,10 +34,6 @@ class TweetCell: UITableViewCell {
             tweetContent.text = tweetForCell.tweetText
             timeSinceTweeted.text = tweetForCell.timeSinceTweet
             tweetHandle.text = "@" + tweetForCell.tweetHandle
-            retweeted = tweetForCell.retweeted
-            
-            setFavorite(tweetForCell.favorited)
-            setRetweeted(tweetForCell.retweeted)
             
             retweetCounts.text = tweetForCell.getStringofRetweetCounts()
             favCounts.text = tweetForCell.getStringofFavCounts()
@@ -56,37 +54,34 @@ class TweetCell: UITableViewCell {
     
 //MARK: - Set selected or retweeted and API calls for both functions
     
-    var favorited: Bool = false
-    var retweeted: Bool = false
-    
     func setFavorite(_ isFavorited: Bool) {
-        favorited = isFavorited
-        if (favorited) {
-            favButton.setImage(UIImage(named:"favor-icon-red"), for:
+        self.favorited = isFavorited
+        if (isFavorited) {
+            self.favButton.setImage(UIImage(named:"favor-icon-red"), for:
                                 UIControl.State.normal)
         }
         else {
-            favButton.setImage(UIImage(named:"favor-icon"), for:
+            self.favButton.setImage(UIImage(named:"favor-icon"), for:
                                 UIControl.State.normal)
         }
     }
     
     func setRetweeted(_ isRetweeted: Bool) {
-        retweeted = isRetweeted
+        self.retweeted = isRetweeted
         if (isRetweeted) {
-            retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
+            self.retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
             
         } else {
-            retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
+            self.retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
         }
     }
     
 // MARK: - IB Actions
     
     @IBAction func retweetPressed(_ sender: Any) {
-        let toBeRetweeted = !retweeted
+        self.retweeted = !self.retweeted
         
-        if (toBeRetweeted) {
+        if (self.retweeted) {
             TwitterAPICaller.client?.retweet(tweetID: self.tweetIDforCell, success: {
                 self.tweetForCell.retweetCount += 1
                 self.retweetCounts.text = self.tweetForCell.getStringofRetweetCounts()
@@ -106,12 +101,13 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func favPressed(_ sender: Any) {
-        let toBeFavorited = !favorited
+        self.favorited = !self.favorited
         
-        if (toBeFavorited) {
+        if (self.favorited) {
             TwitterAPICaller.client?.favoriteTweet(tweetID: self.tweetIDforCell, success: {
                 self.tweetForCell.favCount += 1
                 self.favCounts.text = self.tweetForCell.getStringofFavCounts()
+                self.tweetForCell.favorited = self.favorited
                 self.setFavorite(true)
             }, failure: { (error) in
                 print("Favorite did not succeed: \(error)")
@@ -120,6 +116,7 @@ class TweetCell: UITableViewCell {
             TwitterAPICaller.client?.unfavoriteTweet(tweetID: self.tweetIDforCell, success: {
                 self.tweetForCell.favCount -= 1
                 self.favCounts.text = self.tweetForCell.getStringofFavCounts()
+                self.tweetForCell.favorited = self.favorited
                 self.setFavorite(false)
             }, failure: { (error) in
                 print("Unfavorite did not succeed: \(error)")
