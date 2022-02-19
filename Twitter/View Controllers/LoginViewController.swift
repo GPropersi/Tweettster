@@ -33,6 +33,14 @@ class LoginViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: "userLoggedIn") {
             // User logged in
             self.performSegue(withIdentifier: "loginToHome", sender: self)
+            
+//            TwitterAPICaller.client?.getAccountInfo(success: { (accountInfo: NSDictionary) in
+//                UserDefaults.standard.set(accountInfo, forKey: "accountInfo")
+//                self.performSegue(withIdentifier: "loginToHome", sender: self)
+//            }, failure: { Error in
+//                self.present(self.loginError, animated: true, completion: nil)
+//            })
+            
         }
         
     }
