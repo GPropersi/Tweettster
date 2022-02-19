@@ -12,7 +12,7 @@ import AlamofireImage
 class TweetCell: UITableViewCell {
     
     var tweetIDforCell: Int = -1
-
+    
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tweetContent: UILabel!
@@ -27,8 +27,10 @@ class TweetCell: UITableViewCell {
             tweetContent.text = tweetForCell.tweetText
             timeSinceTweeted.text = tweetForCell.timeSinceTweet
             tweetHandle.text = "@" + tweetForCell.tweetHandle
+            retweeted = tweetForCell.retweeted
             
             setFavorite(tweetForCell.favorited)
+            setRetweeted(tweetForCell.retweeted)
 
             // Set Image
             profileImageView.af_setImage(withURL: tweetForCell.profileImageURLSecure!)
@@ -38,6 +40,7 @@ class TweetCell: UITableViewCell {
     }
     
     var favorited: Bool = false
+    var retweeted: Bool = false
     
     func setFavorite(_ isFavorited: Bool) {
         favorited = isFavorited
@@ -51,7 +54,22 @@ class TweetCell: UITableViewCell {
         }
     }
     
+    func setRetweeted(_ isRetweeted: Bool) {
+        if (isRetweeted) {
+            retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
+            retweetButton.isEnabled = false
+        } else {
+            retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
+            retweetButton.isEnabled = true
+        }
+    }
+    
     @IBAction func retweetPressed(_ sender: Any) {
+        TwitterAPICaller.client?.retweet(tweetID: self.tweetIDforCell, success: {
+            self.setRetweeted(true)
+        }, failure: { (error) in
+            print("Failure to retweet: \(error)")
+        })
     }
     
     @IBAction func favPressed(_ sender: Any) {
