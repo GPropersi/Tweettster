@@ -21,6 +21,7 @@ struct Tweet {
     var retweeted: Bool
     var retweetCount: Int
     var favCount: Int
+    var mediaURLHttps: String?
     
     init(tweetResponse: NSDictionary) {
         tweetText = tweetResponse["text"] as! String
@@ -34,6 +35,25 @@ struct Tweet {
         datePosted = tweetResponse["created_at"] as! String
         retweetCount = tweetResponse["retweet_count"] as! Int
         favCount = tweetResponse["favorite_count"] as! Int
+
+        let entitiesObject = tweetResponse["entities"] as! NSDictionary
+        
+        let mediaObjectExists = entitiesObject["media"] != nil
+        
+        if mediaObjectExists {
+            let mediaObject = entitiesObject["media"] as! [NSDictionary]
+            
+            let mediaURLExists = mediaObject[0]["media_url_https"] != nil
+            
+            if mediaURLExists {
+                mediaURLHttps = (mediaObject[0]["media_url_https"] as? String) ?? ""
+            } else {
+                mediaURLHttps = ""
+            }
+            
+        } else {
+            mediaURLHttps = ""
+        }
         
         timeSinceTweet = getTimeSincePosted()
         

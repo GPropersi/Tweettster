@@ -10,6 +10,7 @@ import UIKit
 import AlamofireImage
 
 class TweetCell: UITableViewCell {
+    // MARK: - This file contains a tweet cell WITHOUT an image.
     
     var tweetIDforCell: Int = -1
     
@@ -22,7 +23,7 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var retweetCounts: UILabel!
     @IBOutlet weak var favCounts: UILabel!
-        
+    
 // MARK: - Set the cell properties
     
     var tweetForCell: Tweet! {

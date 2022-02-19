@@ -35,12 +35,14 @@ class HomeTableViewController: UITableViewController {
         tweetLoadError.addAction(ok)
         //tableView.separatorColor = UIColor.white // Implement for dark mode
         
+        
         tweetRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = tweetRefreshControl
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        tableView.rowHeight = UITableView.automaticDimension
         self.loadTweets()
     }
     
@@ -56,7 +58,7 @@ class HomeTableViewController: UITableViewController {
     
     @objc func loadTweets() {
         // Get tweets from API, load them into the cells
-        numberOfTweets = 20
+        numberOfTweets = 10
         
         let twitterTweetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         let params: [String: Int] = ["count" : numberOfTweets]
@@ -115,9 +117,17 @@ class HomeTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
         let tweet = tweetArray[indexPath.row]
         
+        if tweet.mediaURLHttps == "" {
+            // IF the URL is an empty string "", then no media image was found. Set cell without image
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
+            cell.tweetForCell = tweet
+            return cell
+        }
+        
+        // Set cell with image
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetWithImageCell", for: indexPath) as! TweetWithImageCell
         cell.tweetForCell = tweet
         return cell
     }
