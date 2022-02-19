@@ -20,6 +20,8 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var tweetHandle: UILabel!
     @IBOutlet weak var favButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
+
+// MARK: - Set the cell properties
     
     var tweetForCell: Tweet! {
         didSet {
@@ -38,6 +40,8 @@ class TweetCell: UITableViewCell {
             tweetIDforCell = tweetForCell.tweetID
         }
     }
+    
+//MARK: - Set selected or retweeted and API calls for both functions
     
     var favorited: Bool = false
     var retweeted: Bool = false
@@ -63,6 +67,8 @@ class TweetCell: UITableViewCell {
             retweetButton.isEnabled = true
         }
     }
+    
+// MARK: - IB Actions
     
     @IBAction func retweetPressed(_ sender: Any) {
         TwitterAPICaller.client?.retweet(tweetID: self.tweetIDforCell, success: {
@@ -90,12 +96,6 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    
-    @IBOutlet weak var retweetPressed: UIButton!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

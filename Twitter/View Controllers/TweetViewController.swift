@@ -8,14 +8,25 @@
 
 import UIKit
 
-class TweetViewController: UIViewController {
+class TweetViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var tweetText: UITextView!
+    @IBOutlet weak var characterCount: UILabel!
+    @IBOutlet weak var tweetButton: UIBarButtonItem!
+    @IBOutlet weak var tooManyCharsLabel: UILabel!
     
     var emptyTweetError: UIAlertController!
+      
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tweetText.delegate = self
+        
+        tweetText.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
+        tweetText.layer.borderWidth = 1.0
+        tweetText.layer.cornerRadius = 5
+
         tweetText.becomeFirstResponder()
         
         // Create new alert for loading of tweets error
@@ -28,6 +39,19 @@ class TweetViewController: UIViewController {
         emptyTweetError.addAction(ok)
 
         // Do any additional setup after loading the view.
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let charCount = 280 - tweetText.text.count
+        characterCount.text = "\(charCount)"
+        
+        if charCount < 0 {
+            tweetButton.isEnabled = false
+            tooManyCharsLabel.text = "Too many characters."
+        } else {
+            tweetButton.isEnabled = true
+            tooManyCharsLabel.text = ""
+        }
     }
     
     //MARK: - IBActions

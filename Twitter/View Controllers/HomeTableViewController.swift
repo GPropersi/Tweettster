@@ -24,10 +24,7 @@ class HomeTableViewController: UITableViewController {
 
         // Unhighlight selection between views
         self.clearsSelectionOnViewWillAppear = true
-        
-//        self.tableView.rowHeight = UITableView.automaticDimension
-//        self.tableView.estimatedRowHeight = 150
-        
+
         // Create new alert for loading of tweets error
         tweetLoadError = UIAlertController(title: "Alert", message: "Could not login.", preferredStyle: .alert)
 
