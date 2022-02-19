@@ -20,7 +20,9 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var tweetHandle: UILabel!
     @IBOutlet weak var favButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
-
+    @IBOutlet weak var retweetCounts: UILabel!
+    @IBOutlet weak var favCounts: UILabel!
+        
 // MARK: - Set the cell properties
     
     var tweetForCell: Tweet! {
@@ -33,6 +35,9 @@ class TweetCell: UITableViewCell {
             
             setFavorite(tweetForCell.favorited)
             setRetweeted(tweetForCell.retweeted)
+            
+            retweetCounts.text = tweetForCell.getStringofRetweetCounts()
+            favCounts.text = tweetForCell.getStringofFavCounts()
 
             // Set Image
             profileImageView.af_setImage(withURL: tweetForCell.profileImageURLSecure!)
