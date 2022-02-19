@@ -16,14 +16,20 @@ struct Tweet {
     var datePosted: String
     var timeSinceTweet: String!
     var tweetHandle: String
+    var favorited: Bool
+    var tweetID: Int
     
     init(tweetResponse: NSDictionary) {
         tweetText = tweetResponse["text"] as! String
+        favorited = tweetResponse["favorited"] as! Bool
         let userData = tweetResponse["user"] as! NSDictionary
         userName = userData["name"] as! String
         tweetHandle = userData["screen_name"] as! String
         profileImageURLSecure = URL(string: userData["profile_image_url_https"] as! String)
+        tweetID = tweetResponse["id"] as! Int
         datePosted = tweetResponse["created_at"] as! String
+        
+        
         timeSinceTweet = getTimeSincePosted()
     }
     

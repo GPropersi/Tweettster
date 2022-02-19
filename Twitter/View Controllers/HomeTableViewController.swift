@@ -14,7 +14,7 @@ class HomeTableViewController: UITableViewController {
     var tweetArray = [Tweet]()
     var numberOfTweets: Int!
     var tweetLoadError: UIAlertController!
-    
+
     let tweetRefreshControl = UIRefreshControl()
     
     // MARK: View Life Cycle
@@ -24,6 +24,9 @@ class HomeTableViewController: UITableViewController {
 
         // Unhighlight selection between views
         self.clearsSelectionOnViewWillAppear = true
+        
+//        self.tableView.rowHeight = UITableView.automaticDimension
+//        self.tableView.estimatedRowHeight = 150
         
         // Create new alert for loading of tweets error
         tweetLoadError = UIAlertController(title: "Alert", message: "Could not login.", preferredStyle: .alert)
