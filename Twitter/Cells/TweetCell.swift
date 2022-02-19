@@ -36,7 +36,14 @@ class TweetCell: UITableViewCell {
 
             // Set Image
             profileImageView.af_setImage(withURL: tweetForCell.profileImageURLSecure!)
+            
+            // Set circular border
+            profileImageView.layer.borderWidth = 1
+            profileImageView.layer.masksToBounds = false
+            profileImageView.layer.borderColor = UIColor.white.cgColor
+            profileImageView.layer.cornerRadius = profileImageView.frame.height/2
             profileImageView.clipsToBounds = true
+            
             tweetIDforCell = tweetForCell.tweetID
         }
     }
